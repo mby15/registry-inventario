@@ -1,25 +1,21 @@
-// Guardar todos los registros en localStorage
-function guardarEnLocalStorage() {
-  const filas = Array.from(tbody.querySelectorAll("tr"));
-  const registros = filas.map(fila => {
-    const cols = fila.querySelectorAll("td");
-    return {
-      producto: cols[0].textContent,
-      cantidad: cols[1].textContent,
-      fecha: cols[2].textContent
-    };
-  });
-  localStorage.setItem("registrosInventario", JSON.stringify(registros));
-}
+// ==============================
+// Referencias a los elementos DOM
+// ==============================
+const tbody = document.querySelector("#tabla tbody");
+const inputProducto = document.getElementById("producto");
+const inputCantidad = document.getElementById("cantidad");
+const btnRegistrar = document.getElementById("registrar");
 
-// Cargar registros desde localStorage
-function cargarDesdeLocalStorage() {
-  const registros = JSON.parse(localStorage.getItem("registrosInventario")) || [];
-  registros.forEach(r => agregarRegistro(r.producto, r.cantidad, r.fecha, false));
-}
+const inputProductoNuevo = document.getElementById("productoNuevo");
+const inputCantidadNuevo = document.getElementById("cantidadNuevo");
+const btnRegistrarNuevo = document.getElementById("registrarNuevo");
 
+const btnExportar = document.getElementById("exportar");
+const btnEliminarTodo = document.getElementById("eliminarTodo");
 
+// =======================================
 // Lista predeterminada de productos
+// =======================================
 const productos = [
   "AGUA BRICK 0,33L",
   "AGUA FUENTEPRIMAVERA GAS 0,50cl PET",
@@ -43,99 +39,9 @@ const productos = [
   "GUINNESS HOP HOUSE 13 1/3 12 UDS"
 ];
 
-// Referencias a los campos
-const inputProducto = document.getElementById("producto");
-const inputCantidad = document.getElementById("cantidad");
-const btnRegistrar = document.getElementById("registrar");
-const tbody = document.querySelector("#tabla tbody");
-
-// Función para filtrar coincidencias en orden alfabético, insensible a mayúsculas
-function buscarProducto(texto) {
-  const valor = texto.toUpperCase();
-  return productos
-    .filter(p => p.toUpperCase().includes(valor))
-    .sort();
-}
-
-// Evento input para autocompletado
-inputProducto.addEventListener("input", () => {
-  const coincidencias = buscarProducto(inputProducto.value);
-  console.log("Coincidencias:", coincidencias); // Por ahora, mostramos en consola
-});
-
-
-// Crear contenedor de sugerencias
-const listaSugerencias = document.createElement("div");
-listaSugerencias.classList.add("sugerencias");
-inputProducto.parentNode.appendChild(listaSugerencias);
-
-// Función para mostrar sugerencias
-function mostrarSugerencias() {
-  const valor = inputProducto.value.toUpperCase();
-  listaSugerencias.innerHTML = ""; // Limpiar lista
-
-  if (!valor) return; // Si está vacío, no mostramos nada
-
-  const coincidencias = productos
-    .filter(p => p.toUpperCase().includes(valor))
-    .sort();
-
-  coincidencias.forEach(item => {
-    const div = document.createElement("div");
-    div.textContent = item;
-    div.classList.add("sugerencia");
-    div.addEventListener("click", () => {
-      inputProducto.value = item; // Al hacer clic, se pone en el input
-      listaSugerencias.innerHTML = ""; // Limpiar lista
-    });
-    listaSugerencias.appendChild(div);
-  });
-}
-
-// Evento input para autocompletado
-inputProducto.addEventListener("input", mostrarSugerencias);
-
-// Cerrar lista si se hace clic fuera
-document.addEventListener("click", (e) => {
-  if (e.target !== inputProducto) {
-    listaSugerencias.innerHTML = "";
-  }
-});
-
-// Función para añadir un registro a la tabla con soporte localStorage
-function agregarRegistro(producto, cantidad, fecha = null, guardar = true) {
-  if (!producto || !cantidad) return; // No hacer nada si faltan datos
-
-  // Usar la fecha proporcionada (para cargar desde localStorage) o la actual
-  if (!fecha) {
-    fecha = new Date().toLocaleDateString();
-  }
-
-  const tr = document.createElement("tr");
-
-  // Columnas de la tabla
-  tr.innerHTML = `
-    <td>${producto}</td>
-    <td>${cantidad}</td>
-    <td>${fecha}</td>
-    <td><button class="eliminar">Eliminar</button></td>
-  `;
-
-  // Botón eliminar individual
-  tr.querySelector(".eliminar").addEventListener("click", () => {
-    tr.remove();
-    guardarEnLocalStorage(); // Guardar cambios después de eliminar
-  });
-
-  // Añadir al inicio del tbody
-  tbody.prepend(tr);
-
-  // Guardar automáticamente en localStorage
-  if (guardar) guardarEnLocalStorage();
-}
-
-
-// Función para guardar todos los registros en localStorage
+// =======================================
+// LocalStorage: Guardar y Cargar
+// =======================================
 function guardarEnLocalStorage() {
   const filas = Array.from(tbody.querySelectorAll("tr"));
   const registros = filas.map(fila => {
@@ -149,59 +55,121 @@ function guardarEnLocalStorage() {
   localStorage.setItem("registrosInventario", JSON.stringify(registros));
 }
 
-// Función para cargar registros desde localStorage al iniciar
 function cargarDesdeLocalStorage() {
   const registros = JSON.parse(localStorage.getItem("registrosInventario")) || [];
   registros.forEach(r => agregarRegistro(r.producto, r.cantidad, r.fecha, false));
 }
 
-// Evento botón Registrar principal
+// =======================================
+// Autocompletado de productos
+// =======================================
+function buscarProducto(texto) {
+  const valor = texto.toUpperCase();
+  return productos
+    .filter(p => p.toUpperCase().includes(valor))
+    .sort();
+}
+
+// Contenedor de sugerencias
+const listaSugerencias = document.createElement("div");
+listaSugerencias.classList.add("sugerencias");
+inputProducto.parentNode.appendChild(listaSugerencias);
+
+function mostrarSugerencias() {
+  const valor = inputProducto.value.toUpperCase();
+  listaSugerencias.innerHTML = "";
+
+  if (!valor) return;
+
+  const coincidencias = buscarProducto(inputProducto.value);
+  coincidencias.forEach(item => {
+    const div = document.createElement("div");
+    div.textContent = item;
+    div.classList.add("sugerencia");
+    div.addEventListener("click", () => {
+      inputProducto.value = item;
+      listaSugerencias.innerHTML = "";
+    });
+    listaSugerencias.appendChild(div);
+  });
+}
+
+inputProducto.addEventListener("input", mostrarSugerencias);
+
+// Cerrar lista si clic fuera
+document.addEventListener("click", (e) => {
+  if (e.target !== inputProducto) {
+    listaSugerencias.innerHTML = "";
+  }
+});
+
+// =======================================
+// Función para añadir registro
+// =======================================
+function agregarRegistro(producto, cantidad, fecha = null, guardar = true) {
+  if (!producto || !cantidad) return;
+
+  if (!fecha) {
+    fecha = new Date().toLocaleDateString();
+  }
+
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td>${producto}</td>
+    <td>${cantidad}</td>
+    <td>${fecha}</td>
+    <td><button class="eliminar">Eliminar</button></td>
+  `;
+
+  tr.querySelector(".eliminar").addEventListener("click", () => {
+    tr.remove();
+    guardarEnLocalStorage();
+  });
+
+  tbody.prepend(tr);
+
+  if (guardar) guardarEnLocalStorage();
+}
+
+// =======================================
+// Botones Registrar
+// =======================================
 btnRegistrar.addEventListener("click", () => {
   const producto = inputProducto.value.trim();
   const cantidad = inputCantidad.value.trim();
-
   agregarRegistro(producto, cantidad);
-
-  // Vaciar campos
   inputProducto.value = "";
   inputCantidad.value = "";
   listaSugerencias.innerHTML = "";
 });
 
-// Evento botón Registrar adicional
-const btnRegistrarNuevo = document.getElementById("registrarNuevo");
-const inputProductoNuevo = document.getElementById("productoNuevo");
-const inputCantidadNuevo = document.getElementById("cantidadNuevo");
-
 btnRegistrarNuevo.addEventListener("click", () => {
   const producto = inputProductoNuevo.value.trim();
   const cantidad = inputCantidadNuevo.value.trim();
-
   agregarRegistro(producto, cantidad);
-
   inputProductoNuevo.value = "";
   inputCantidadNuevo.value = "";
 });
 
-// Botón Exportar CSV
-const btnExportar = document.getElementById("exportar");
+// =======================================
+// Exportar CSV
+// =======================================
 btnExportar.addEventListener("click", () => {
   const filas = Array.from(tbody.querySelectorAll("tr"));
   if (filas.length === 0) return alert("No hay registros para exportar.");
 
   let csvContent = "Producto;Cantidad;Fecha\n";
-
   filas.forEach(fila => {
     const cols = fila.querySelectorAll("td");
     const filaDatos = Array.from(cols)
-      .slice(0, 3) // Producto, Cantidad, Fecha
-      .map(td => td.textContent.replace(/;/g, ",")) // evitar ; en datos
+      .slice(0, 3)
+      .map(td => td.textContent.replace(/;/g, ","))
       .join(";");
     csvContent += filaDatos + "\n";
   });
 
-  const fecha = new Date().toLocaleDateString().replace(/\//g, "-");
-  const nombreArchivo = `inventario_${fecha}.csv`;
+  const fechaArchivo = new Date().toLocaleDateString().replace(/\//g, "-");
+  const nombreArchivo = `inventario_${fechaArchivo}.csv`;
 
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
@@ -210,16 +178,20 @@ btnExportar.addEventListener("click", () => {
   link.click();
 });
 
-// Botón Eliminar todo con confirmación
-const btnEliminarTodo = document.getElementById("eliminarTodo");
+// =======================================
+// Eliminar todo con confirmación
+// =======================================
 btnEliminarTodo.addEventListener("click", () => {
   const confirmacion = prompt("Escribe ELIMINAR TODO para borrar todos los registros:");
   if (confirmacion === "ELIMINAR TODO") {
     tbody.innerHTML = "";
+    guardarEnLocalStorage();
   } else {
     alert("No se eliminó ningún registro.");
   }
 });
 
-// Cargar registros cuando se abre la página
+// =======================================
+// Cargar registros al iniciar
+// =======================================
 document.addEventListener("DOMContentLoaded", cargarDesdeLocalStorage);
