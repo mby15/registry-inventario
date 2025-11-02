@@ -28,15 +28,17 @@ h1 {
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
+  flex-wrap: wrap; /* permite que los inputs se muevan en móvil */
 }
 
 .registro input {
-  flex: 1;
+  flex: 1 1 100%; /* ocupa toda la fila en móvil */
   padding: 10px;
   font-size: 1.1rem;
 }
 
 .registro button {
+  flex: 1 1 100%; /* botón debajo de los inputs */
   padding: 10px 15px;
   font-size: 1.1rem;
   cursor: pointer;
@@ -47,6 +49,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  font-size: 10px; /* letra más pequeña para móvil */
 }
 
 thead {
@@ -54,7 +57,7 @@ thead {
 }
 
 th, td {
-  padding: 10px;
+  padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
@@ -73,7 +76,8 @@ button.eliminar {
 
 .acciones {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
   margin-top: 20px;
 }
 
@@ -83,13 +87,14 @@ button.eliminar {
   cursor: pointer;
 }
 
+/* Sugerencias autocompletado */
 .sugerencias {
   border: 1px solid #ccc;
   max-height: 150px;
   overflow-y: auto;
   background-color: #fff;
   position: absolute;
-  width: calc(100% - 90px); /* Ajusta según padding y botón */
+  width: calc(100% - 20px); /* ancho completo del input */
   z-index: 10;
 }
 
@@ -100,4 +105,20 @@ button.eliminar {
 
 .sugerencia:hover {
   background-color: #f0f0f0;
+}
+
+/* Media queries para móvil */
+@media (min-width: 480px) {
+  .registro input {
+    flex: 1; /* inputs en línea si hay espacio */
+  }
+
+  .registro button {
+    flex: 0 0 auto;
+    margin-top: 0;
+  }
+
+  .acciones {
+    flex-direction: row; /* botones lado a lado en pantallas más grandes */
+  }
 }
