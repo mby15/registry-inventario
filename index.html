@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registry de Inventario</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Registry de Inventario</h1>
+  <div class="container">
+    <h1>Registry de Inventario</h1>
+
+    <!-- Campo principal -->
+    <div class="registro">
+      <input type="text" id="producto" placeholder="Buscar o escribir producto">
+      <input type="number" step="0.01" id="cantidad" placeholder="Cantidad">
+      <button id="registrar">Registrar</button>
+    </div>
+
+    <!-- Tabla de registros -->
+    <table id="tabla">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Fecha</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Registros se añadirán aquí dinámicamente -->
+      </tbody>
+    </table>
+
+    <!-- Botones de acción -->
+    <div class="acciones">
+      <button id="exportar">Exportar a CSV</button>
+      <button id="eliminarTodo">Eliminar todo</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

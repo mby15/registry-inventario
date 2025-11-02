@@ -1,1 +1,103 @@
-body { font-family: sans-serif; }
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #ffffff;
+  color: #333;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+/* Campos de registro */
+.registro {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.registro input {
+  flex: 1;
+  padding: 10px;
+  font-size: 1.1rem;
+}
+
+.registro button {
+  padding: 10px 15px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* Tabla de registros */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+thead {
+  background-color: #f2f2f2;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+button.eliminar {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.acciones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.acciones button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.sugerencias {
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  position: absolute;
+  width: calc(100% - 90px); /* Ajusta según padding y botón */
+  z-index: 10;
+}
+
+.sugerencia {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.sugerencia:hover {
+  background-color: #f0f0f0;
+}
