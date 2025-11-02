@@ -11,30 +11,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnEliminarTodo = document.getElementById("eliminarTodo");
 
   // =======================================
-  // Lista predeterminada de productos
-  // =======================================
-  const productos = [
-    "AGUA BRICK 0,33L",
-    "AGUA FUENTEPRIMAVERA GAS 0,50cl PET",
-    "AGUA LANJARON 0,50cl RET",
-    "AGUA LANJARON 1L RET",
-    "AGUA LANJARON GAS 0,50cl RET",
-    "AGUA LANJARÓN PET 0.33L",
-    "1/3 CRUZCAMPO ESPECIAL RT 24 UDS",
-    "1/3 CRUZCAMPO GRAN RESERVA NR 24 UDS",
-    "1/3 NR CRUZCAMPO SIN GLUTEN 12 UDS",
-    "18/17 LA RUBIA 1/3 12 UDS",
-    "AGUILA SIN FILTRAR NR 12 UDS",
-    "AMSTEL ORO 0´0 1/3 RET",
-    "AMSTEL ORO 1/3 RET 24 UDS",
-    "AMSTEL RADLER 1/3 RET 24 UDS",
-    "AMSTEL RADLER 30L BARRIL",
-    "BIRRA MORETTI 1/3 24 UDS",
-    "DESPERADOS1/3 NR 24 UDS",
-    "EL AGUILA 1900 1/3 RET 24 UDS",
-    "EL ALCAZAR 1/3 12 UDS",
-    "GUINNESS HOP HOUSE 13 1/3 12 UDS"
-  ];
+// Lista de productos desde JSON externo
+// =======================================
+let productos = []; // Inicial vacío
+
+async function cargarProductos() {
+  try {
+    const response = await fetch("productos.json");
+    if (!response.ok) throw new Error("No se pudo cargar productos.json");
+    productos = await response.json();
+    console.log("Productos cargados:", productos.length);
+  } catch (error) {
+    console.error("Error cargando productos:", error);
+  }
+}
+
+// Llamamos a la función al inicio
+cargarProductos();
+
 
   // =======================================
   // Funciones de LocalStorage
