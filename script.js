@@ -1,3 +1,24 @@
+// Guardar todos los registros en localStorage
+function guardarEnLocalStorage() {
+  const filas = Array.from(tbody.querySelectorAll("tr"));
+  const registros = filas.map(fila => {
+    const cols = fila.querySelectorAll("td");
+    return {
+      producto: cols[0].textContent,
+      cantidad: cols[1].textContent,
+      fecha: cols[2].textContent
+    };
+  });
+  localStorage.setItem("registrosInventario", JSON.stringify(registros));
+}
+
+// Cargar registros desde localStorage
+function cargarDesdeLocalStorage() {
+  const registros = JSON.parse(localStorage.getItem("registrosInventario")) || [];
+  registros.forEach(r => agregarRegistro(r.producto, r.cantidad, r.fecha, false));
+}
+
+
 // Lista predeterminada de productos
 const productos = [
   "AGUA BRICK 0,33L",
@@ -81,14 +102,18 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Función para añadir un registro a la tabla
-function agregarRegistro(producto, cantidad) {
+// Función para añadir un registro a la tabla con soporte localStorage
+function agregarRegistro(producto, cantidad, fecha = null, guardar = true) {
   if (!producto || !cantidad) return; // No hacer nada si faltan datos
 
-  const fecha = new Date().toLocaleDateString(); // Fecha del registro
+  // Usar la fecha proporcionada (para cargar desde localStorage) o la actual
+  if (!fecha) {
+    fecha = new Date().toLocaleDateString();
+  }
+
   const tr = document.createElement("tr");
 
-  // Columnas
+  // Columnas de la tabla
   tr.innerHTML = `
     <td>${producto}</td>
     <td>${cantidad}</td>
@@ -99,10 +124,35 @@ function agregarRegistro(producto, cantidad) {
   // Botón eliminar individual
   tr.querySelector(".eliminar").addEventListener("click", () => {
     tr.remove();
+    guardarEnLocalStorage(); // Guardar cambios después de eliminar
   });
 
   // Añadir al inicio del tbody
   tbody.prepend(tr);
+
+  // Guardar automáticamente en localStorage
+  if (guardar) guardarEnLocalStorage();
+}
+
+
+// Función para guardar todos los registros en localStorage
+function guardarEnLocalStorage() {
+  const filas = Array.from(tbody.querySelectorAll("tr"));
+  const registros = filas.map(fila => {
+    const cols = fila.querySelectorAll("td");
+    return {
+      producto: cols[0].textContent,
+      cantidad: cols[1].textContent,
+      fecha: cols[2].textContent
+    };
+  });
+  localStorage.setItem("registrosInventario", JSON.stringify(registros));
+}
+
+// Función para cargar registros desde localStorage al iniciar
+function cargarDesdeLocalStorage() {
+  const registros = JSON.parse(localStorage.getItem("registrosInventario")) || [];
+  registros.forEach(r => agregarRegistro(r.producto, r.cantidad, r.fecha, false));
 }
 
 // Evento botón Registrar principal
@@ -170,3 +220,6 @@ btnEliminarTodo.addEventListener("click", () => {
     alert("No se eliminó ningún registro.");
   }
 });
+
+// Cargar registros cuando se abre la página
+document.addEventListener("DOMContentLoaded", cargarDesdeLocalStorage);
