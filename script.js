@@ -41,8 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         producto: cols[0].textContent,
         unidades: cols[1].textContent,
         cajas: cols[2].textContent,
-        total: cols[3].textContent,
-        fecha: cols[4].textContent
+        total: cols[3].textContent
       };
     });
     localStorage.setItem("registrosInventario", JSON.stringify(registros));
