@@ -95,11 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function actualizarTotalUnidades() {
     const unidades = parseFloat(inputUnidades.value) || 0;
     const cajas = parseFloat(inputCajas.value);
-    if (cajas && cajas > 0) {
-      inputTotalUnidades.value = unidades * cajas;
-    } else {
-      inputTotalUnidades.value = unidades;
-    }
+    inputTotalUnidades.value = (cajas && cajas > 0) ? unidades * cajas : unidades;
   }
 
   inputUnidades.addEventListener("input", actualizarTotalUnidades);
@@ -108,9 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // =======================================
   // Añadir registro
   // =======================================
-  function agregarRegistro(producto, unidades, cajas, total, fecha = null, guardar = true) {
+  function agregarRegistro(producto, unidades, cajas, total, guardar = true) {
     if (!producto) return;
-    if (!fecha) fecha = new Date().toLocaleDateString();
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -118,7 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
       <td class="und">${unidades}</td>
       <td class="caj">${cajas}</td>
       <td class="tot">${total}</td>
-      <td class="fec">${fecha}</td>
       <td>
         <button class="editar">Editar</button>
         <button class="eliminar">Eliminar</button>
@@ -132,9 +126,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // EDITAR
-    tr.querySelector(".editar").addEventListener("click", (e) => {
-      const btn = e.target;
-
+    tr.querySelector(".editar").addEventListener("click", () => {
+      const btn = tr.querySelector(".editar");
       const prodTd = tr.querySelector(".prod");
       const undTd = tr.querySelector(".und");
       const cajTd = tr.querySelector(".caj");
@@ -150,18 +143,17 @@ document.addEventListener("DOMContentLoaded", () => {
         cajTd.innerHTML = `<input type="number" step="1" value="${c}" class="edit-caj">`;
         totTd.innerHTML = `<input type="number" step="0.01" readonly class="edit-tot">`;
 
-        const upd = () => {
+        const actualizar = () => {
           const newU = parseFloat(tr.querySelector(".edit-und").value) || 0;
           const newC = parseFloat(tr.querySelector(".edit-caj").value);
           tr.querySelector(".edit-tot").value = (newC && newC > 0) ? newU * newC : newU;
         };
 
-        tr.querySelector(".edit-und").addEventListener("input", upd);
-        tr.querySelector(".edit-caj").addEventListener("input", upd);
-        upd(); // inicializar valor
+        tr.querySelector(".edit-und").addEventListener("input", actualizar);
+        tr.querySelector(".edit-caj").addEventListener("input", actualizar);
+        actualizar();
 
         btn.textContent = "Guardar";
-
       } else {
         const newProd = tr.querySelector(".edit-prod").value.trim();
         const newUnd = tr.querySelector(".edit-und").value.trim();
@@ -210,11 +202,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const filas = Array.from(tbody.querySelectorAll("tr"));
     if (filas.length === 0) return alert("No hay registros para exportar.");
 
-    let csvContent = "Producto;Unidades;Cajas;Total;Fecha\n";
+    let csvContent = "Producto;Unidades;Cajas;Total\n";
     filas.forEach(fila => {
       const cols = fila.querySelectorAll("td");
       const filaDatos = Array.from(cols)
-        .slice(0, 5)
+        .slice(0, 4) // solo hasta Total
         .map(td => td.textContent.replace(/;/g, ","))
         .join(";");
       csvContent += filaDatos + "\n";
