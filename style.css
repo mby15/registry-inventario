@@ -26,42 +26,22 @@ h1 {
 /* Campos de registro */
 .registro {
   display: flex;
-  flex-direction: column; /* Producto en fila superior, resto abajo */
   gap: 10px;
   margin-bottom: 15px;
+  flex-wrap: wrap; /* permite que los inputs se muevan en móvil */
 }
 
 /* Inputs del formulario más pequeños */
 .registro input {
   font-size: 0.9rem; /* reducir letra */
   padding: 8px;
+  flex: 1; /* ocupar espacio disponible */
 }
 
-/* Sub-registro: Unidades, Cajas, Total Unidades, Registrar */
-.sub-registro {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-/* Sugerencias autocompletado más pequeñas */
-.sugerencias {
-  font-size: 0.9rem; /* letra más pequeña */
-}
-
-.sugerencia {
-  font-size: 0.9rem; /* también para cada item */
-  padding: 6px 8px; /* un poco menos de padding para que encaje */
-}
-.sub-registro input {
-  flex: 1;
-  font-size: 0.9rem;
-  padding: 8px;
-}
-
-.sub-registro button {
-  flex: 0 0 auto;
-  padding: 8px 12px;
-  font-size: 0.9rem;
+.registro button {
+  flex: 1 1 100%; /* botón debajo de los inputs en móvil */
+  padding: 10px 15px;
+  font-size: 1.1rem;
   cursor: pointer;
 }
 
@@ -70,7 +50,8 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  font-size: 12px; /* un poco más grande que antes para legibilidad */
+  font-size: 12px; /* legibilidad */
+  table-layout: fixed; /* evita expansión excesiva */
 }
 
 thead {
@@ -81,8 +62,18 @@ th, td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  word-wrap: break-word; /* evita overflow */
 }
 
+/* Inputs dentro de la tabla (modo edición) */
+table input {
+  width: 100%; /* ocupar todo el ancho de la celda */
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  padding: 4px;
+}
+
+/* Filas alternadas */
 tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
@@ -122,16 +113,17 @@ button.editar {
 /* Sugerencias autocompletado */
 .sugerencias {
   border: 1px solid #ccc;
-  max-height: 150px;
+  max-height: 200px; /* mayor altura en móvil */
   overflow-y: auto;
   background-color: #fff;
   position: absolute;
-  width: calc(100% - 20px); /* ancho completo del input */
+  width: calc(100% - 20px);
   z-index: 10;
+  font-size: 0.8rem; /* letra más pequeña */
 }
 
 .sugerencia {
-  padding: 8px;
+  padding: 6px; /* menos padding para caber en móvil */
   cursor: pointer;
 }
 
@@ -140,17 +132,36 @@ button.editar {
 }
 
 /* Media queries para móvil */
-@media (min-width: 480px) {
-  .sub-registro input {
+@media (max-width: 480px) {
+  .registro input {
+    flex: 1 1 100%; /* inputs en una sola columna en móvil */
+  }
+
+  .registro button {
+    flex: 1 1 100%;
+    margin-top: 0;
+  }
+
+  .acciones {
+    flex-direction: column; /* botones uno debajo de otro */
+  }
+
+  table {
+    font-size: 0.9rem; /* reducir letra en móvil */
+  }
+}
+
+@media (min-width: 481px) {
+  .registro input {
     flex: 1; /* inputs en línea si hay espacio */
   }
 
-  .sub-registro button {
+  .registro button {
     flex: 0 0 auto;
     margin-top: 0;
   }
 
   .acciones {
-    flex-direction: row; /* botones lado a lado en pantallas más grandes */
+    flex-direction: row; /* botones lado a lado */
   }
 }
