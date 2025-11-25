@@ -154,8 +154,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const upd = () => {
           const newU = parseFloat(tr.querySelector(".edit-und").value) || 0;
-          const newC = parseFloat(tr.querySelector(".edit-caj").value) || 0;
-          tr.querySelector(".edit-tot").value = newU * newC;
+          const newC = parseFloat(tr.querySelector(".edit-caj").value);
+          if (newC && newC > 0) {
+            tr.querySelector(".edit-tot").value = newU * newC;
+          } else {
+            tr.querySelector(".edit-tot").value = newU; // si no hay cajas
+          }
         };
 
         tr.querySelector(".edit-und").addEventListener("input", upd);

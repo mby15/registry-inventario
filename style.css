@@ -26,21 +26,34 @@ h1 {
 /* Campos de registro */
 .registro {
   display: flex;
+  flex-direction: column; /* Producto en fila superior, resto abajo */
   gap: 10px;
   margin-bottom: 15px;
-  flex-wrap: wrap; /* permite que los inputs se muevan en móvil */
 }
 
-  /* Inputs del formulario más pequeños */
-  .registro input {
-    font-size: 0.9rem; /* reducir letra */
-    padding: 8px;
-  }
+/* Inputs del formulario más pequeños */
+.registro input {
+  font-size: 0.9rem; /* reducir letra */
+  padding: 8px;
+}
 
-.registro button {
-  flex: 1 1 100%; /* botón debajo de los inputs en móvil */
-  padding: 10px 15px;
-  font-size: 1.1rem;
+/* Sub-registro: Unidades, Cajas, Total Unidades, Registrar */
+.sub-registro {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sub-registro input {
+  flex: 1;
+  font-size: 0.9rem;
+  padding: 8px;
+}
+
+.sub-registro button {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 
@@ -120,11 +133,11 @@ button.editar {
 
 /* Media queries para móvil */
 @media (min-width: 480px) {
-  .registro input {
+  .sub-registro input {
     flex: 1; /* inputs en línea si hay espacio */
   }
 
-  .registro button {
+  .sub-registro button {
     flex: 0 0 auto;
     margin-top: 0;
   }
