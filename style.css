@@ -45,11 +45,27 @@ h1 {
   cursor: pointer;
 }
 
+/* Botones de acción (exportar y eliminar todo) */
+.acciones {
+  display: flex;
+  flex-direction: row; /* fila por defecto */
+  gap: 10px;
+  margin-bottom: 10px; /* separar un poco de la tabla */
+  flex-wrap: wrap; /* para que en móvil se apilen */
+}
+
+.acciones button {
+  flex: 1 1 auto;
+  padding: 10px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
 /* Tabla de registros */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 0; /* la separación ya la da .acciones */
   font-size: 12px; /* legibilidad */
   table-layout: fixed; /* evita expansión excesiva */
 }
@@ -94,20 +110,6 @@ button.editar {
   padding: 5px 10px;
   cursor: pointer;
   margin-right: 5px;
-}
-
-/* Botones de acción */
-.acciones {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.acciones button {
-  padding: 10px 15px;
-  font-size: 1rem;
-  cursor: pointer;
 }
 
 /* Sugerencias autocompletado */
