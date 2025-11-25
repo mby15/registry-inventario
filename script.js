@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function cargarDesdeLocalStorage() {
     const registros = JSON.parse(localStorage.getItem("registrosInventario")) || [];
     registros.forEach(r =>
-      agregarRegistro(r.producto, r.unidades, r.cajas, r.total, r.fecha, false)
+      agregarRegistro(r.producto, r.unidades, r.cajas, r.total, false)
     );
   }
 

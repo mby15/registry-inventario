@@ -113,7 +113,7 @@ button.editar {
 /* Sugerencias autocompletado */
 .sugerencias {
   border: 1px solid #ccc;
-  max-height: 200px; /* mayor altura en móvil */
+  max-height: 350px; /* mayor altura en móvil */
   overflow-y: auto;
   background-color: #fff;
   position: absolute;
