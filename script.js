@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ==============================
-  // Referencias a los elementos DOM
-  // ==============================
   const tbody = document.querySelector("#tabla tbody");
   const inputProducto = document.getElementById("producto");
   const inputUnidades = document.getElementById("unidades");
@@ -12,9 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnExportar = document.getElementById("exportar");
   const btnEliminarTodo = document.getElementById("eliminarTodo");
 
-  // =======================================
-  // Lista de productos desde JSON externo
-  // =======================================
   let productos = [];
 
   async function cargarProductos() {
@@ -22,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch("productos.json");
       if (!response.ok) throw new Error("No se pudo cargar productos.json");
       productos = await response.json();
-      console.log("Productos cargados:", productos.length);
     } catch (error) {
       console.error("Error cargando productos:", error);
     }
@@ -31,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarProductos();
 
   // =======================================
-  // Funciones LocalStorage
+  // Funciones LocalStorage sin fecha
   // =======================================
   function guardarEnLocalStorage() {
     const filas = Array.from(tbody.querySelectorAll("tr"));
@@ -50,12 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function cargarDesdeLocalStorage() {
     const registros = JSON.parse(localStorage.getItem("registrosInventario")) || [];
     registros.forEach(r =>
-      agregarRegistro(r.producto, r.unidades, r.cajas, r.total, false)
+      agregarRegistro(r.producto, r.unidades, r.cajas, r.total, false) // No pasar fecha
     );
   }
 
   // =======================================
-  // Autocompletado de productos
+  // Autocompletado productos
   // =======================================
   function buscarProducto(texto) {
     const valor = texto.toUpperCase();
@@ -90,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =======================================
-  // CÁLCULO AUTOMÁTICO TOTAL UNIDADES
+  // Cálculo automático total unidades
   // =======================================
   function actualizarTotalUnidades() {
     const unidades = parseFloat(inputUnidades.value) || 0;
@@ -102,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
   inputCajas.addEventListener("input", actualizarTotalUnidades);
 
   // =======================================
-  // Añadir registro
+  // Añadir registro sin fecha
   // =======================================
   function agregarRegistro(producto, unidades, cajas, total, guardar = true) {
     if (!producto) return;
@@ -175,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =======================================
-  // BOTÓN REGISTRAR
+  // Botón Registrar
   // =======================================
   btnRegistrar.addEventListener("click", () => {
     const producto = inputProducto.value.trim();
@@ -196,17 +189,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =======================================
-  // Exportar CSV
+  // Exportar CSV sin fecha
   // =======================================
   btnExportar.addEventListener("click", () => {
     const filas = Array.from(tbody.querySelectorAll("tr"));
     if (filas.length === 0) return alert("No hay registros para exportar.");
 
-    let csvContent = "Producto;Unidades;Cajas;Total\n";
+    let csvContent = "Producto;Unidades;Cajas;Total\n"; // solo estas columnas
     filas.forEach(fila => {
       const cols = fila.querySelectorAll("td");
       const filaDatos = Array.from(cols)
-        .slice(0, 4) // solo hasta Total
+        .slice(0, 4) // hasta Total
         .map(td => td.textContent.replace(/;/g, ","))
         .join(";");
       csvContent += filaDatos + "\n";
