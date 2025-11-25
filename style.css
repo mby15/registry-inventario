@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 700px; /* un poco más ancho para 4 campos */
   margin: 0 auto;
 }
 
@@ -38,7 +38,7 @@ h1 {
 }
 
 .registro button {
-  flex: 1 1 100%; /* botón debajo de los inputs */
+  flex: 1 1 100%; /* botón debajo de los inputs en móvil */
   padding: 10px 15px;
   font-size: 1.1rem;
   cursor: pointer;
@@ -49,7 +49,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  font-size: 10px; /* letra más pequeña para móvil */
+  font-size: 12px; /* un poco más grande que antes para legibilidad */
 }
 
 thead {
@@ -66,6 +66,7 @@ tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
+/* Botones eliminar y editar */
 button.eliminar {
   background-color: #ff4d4d;
   color: white;
@@ -74,6 +75,16 @@ button.eliminar {
   cursor: pointer;
 }
 
+button.editar {
+  background-color: #4d79ff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+/* Botones de acción */
 .acciones {
   display: flex;
   flex-direction: column;
