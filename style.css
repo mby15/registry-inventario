@@ -43,7 +43,15 @@ h1 {
   gap: 10px;
   flex-wrap: wrap;
 }
+/* Sugerencias autocompletado más pequeñas */
+.sugerencias {
+  font-size: 0.9rem; /* letra más pequeña */
+}
 
+.sugerencia {
+  font-size: 0.9rem; /* también para cada item */
+  padding: 6px 8px; /* un poco menos de padding para que encaje */
+}
 .sub-registro input {
   flex: 1;
   font-size: 0.9rem;

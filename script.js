@@ -96,11 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function actualizarTotalUnidades() {
     const unidades = parseFloat(inputUnidades.value) || 0;
     const cajas = parseFloat(inputCajas.value);
-
     if (cajas && cajas > 0) {
       inputTotalUnidades.value = unidades * cajas;
     } else {
-      inputTotalUnidades.value = unidades; // si no hay cajas
+      inputTotalUnidades.value = unidades;
     }
   }
 
@@ -155,16 +154,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const upd = () => {
           const newU = parseFloat(tr.querySelector(".edit-und").value) || 0;
           const newC = parseFloat(tr.querySelector(".edit-caj").value);
-          if (newC && newC > 0) {
-            tr.querySelector(".edit-tot").value = newU * newC;
-          } else {
-            tr.querySelector(".edit-tot").value = newU; // si no hay cajas
-          }
+          tr.querySelector(".edit-tot").value = (newC && newC > 0) ? newU * newC : newU;
         };
 
         tr.querySelector(".edit-und").addEventListener("input", upd);
         tr.querySelector(".edit-caj").addEventListener("input", upd);
-        upd();
+        upd(); // inicializar valor
 
         btn.textContent = "Guardar";
 
@@ -189,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =======================================
-  // BOTÓN REGISTRAR corregido
+  // BOTÓN REGISTRAR
   // =======================================
   btnRegistrar.addEventListener("click", () => {
     const producto = inputProducto.value.trim();
@@ -217,7 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (filas.length === 0) return alert("No hay registros para exportar.");
 
     let csvContent = "Producto;Unidades;Cajas;Total;Fecha\n";
-
     filas.forEach(fila => {
       const cols = fila.querySelectorAll("td");
       const filaDatos = Array.from(cols)
