@@ -95,8 +95,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // =======================================
   function actualizarTotalUnidades() {
     const unidades = parseFloat(inputUnidades.value) || 0;
-    const cajas = parseFloat(inputCajas.value) || 0;
-    inputTotalUnidades.value = unidades * cajas;
+    const cajas = parseFloat(inputCajas.value);
+
+    if (cajas && cajas > 0) {
+      inputTotalUnidades.value = unidades * cajas;
+    } else {
+      inputTotalUnidades.value = unidades; // si no hay cajas
+    }
   }
 
   inputUnidades.addEventListener("input", actualizarTotalUnidades);

@@ -31,11 +31,11 @@ h1 {
   flex-wrap: wrap; /* permite que los inputs se muevan en móvil */
 }
 
-.registro input {
-  flex: 1 1 100%; /* ocupa toda la fila en móvil */
-  padding: 10px;
-  font-size: 1.1rem;
-}
+  /* Inputs del formulario más pequeños */
+  .registro input {
+    font-size: 0.9rem; /* reducir letra */
+    padding: 8px;
+  }
 
 .registro button {
   flex: 1 1 100%; /* botón debajo de los inputs en móvil */
