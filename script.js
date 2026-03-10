@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
         producto: cols[0].textContent,
         unidades: cols[1].textContent,
         cajas: cols[2].textContent,
-        total: cols[3].textContent
+        total: cols[3].textContent,
+        hora: cols[4].textContent
       };
     });
     localStorage.setItem("registrosInventario", JSON.stringify(registros));
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function cargarDesdeLocalStorage() {
     const registros = JSON.parse(localStorage.getItem("registrosInventario")) || [];
     registros.forEach(r =>
-      agregarRegistro(r.producto, r.unidades, r.cajas, r.total, false) // No pasar fecha
+      agregarRegistro(r.producto, r.unidades, r.cajas, r.total, false, r.hora)
     );
   }
 
@@ -97,7 +98,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // =======================================
   // Añadir registro sin fecha
   // =======================================
-  function agregarRegistro(producto, unidades, cajas, total, guardar = true) {
+  function agregarRegistro(producto, unidades, cajas, total, guardar = true, hora = null) {
+    if (!hora) {
+  const ahora = new Date();
+  hora = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
     if (!producto) return;
 
     const tr = document.createElement("tr");
@@ -106,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <td class="und">${unidades}</td>
       <td class="caj">${cajas}</td>
       <td class="tot">${total}</td>
+      <td class="hora">${hora}</td>
       <td>
         <button class="editar">Editar</button>
         <button class="eliminar">Eliminar</button>
@@ -226,8 +232,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
+const buscador = document.getElementById("buscador");
+
+buscador.addEventListener("input", () => {
+  const filtro = buscador.value.toUpperCase();
+  const filas = tbody.querySelectorAll("tr");
+
+  filas.forEach(fila => {
+    const producto = fila.querySelector(".prod").textContent.toUpperCase();
+    fila.style.display = producto.includes(filtro) ? "" : "none";
+  });
+});
   // =======================================
   // Cargar registros al iniciar
   // =======================================
   cargarDesdeLocalStorage();
 });
+
+
+const thProducto = document.getElementById("ordenProducto");
+
+thProducto.style.cursor = "pointer";
+
+thProducto.addEventListener("click", () => {
+
+  const filas = Array.from(tbody.querySelectorAll("tr"));
+
+  filas.sort((a, b) => {
+    const prodA = a.querySelector(".prod").textContent.toUpperCase();
+    const prodB = b.querySelector(".prod").textContent.toUpperCase();
+    return prodA.localeCompare(prodB);
+  });
+
+  filas.forEach(fila => tbody.appendChild(fila));
+});
+
+

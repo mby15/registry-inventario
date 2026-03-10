@@ -22,6 +22,7 @@
     </div>
 
     <!-- Botones de acción encima de la tabla -->
+    <input type="text" id="buscador" placeholder="Buscar producto..." style="width:100%;padding:8px;margin-bottom:10px;">
     <div class="acciones">
       <button id="exportar">Exportar a CSV</button>
       <button id="eliminarTodo">Eliminar todo</button>
@@ -31,11 +32,12 @@
     <table id="tabla">
       <thead>
         <tr>
-          <th>Producto</th>
+          <th id="ordenProducto">Producto</th>
           <th>Unidades</th>
           <th>Cajas</th>
           <th>Total Unidades</th>
-          <th>Eliminar</th>
+          <th>Hora</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>

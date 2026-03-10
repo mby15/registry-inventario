@@ -167,3 +167,41 @@ button.editar {
     flex-direction: row; /* botones lado a lado */
   }
 }
+
+
+
+
+@media (max-width: 480px) {
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: white;
+  }
+
+  td {
+    border: none;
+    padding: 5px 0;
+  }
+
+  td::before {
+    font-weight: bold;
+    display: block;
+  }
+
+  td.prod::before { content: "Producto"; }
+  td.und::before { content: "Unidades"; }
+  td.caj::before { content: "Cajas"; }
+  td.tot::before { content: "Total"; }
+  td.hora::before { content: "Hora"; }
+
+}
