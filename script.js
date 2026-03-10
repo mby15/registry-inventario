@@ -200,11 +200,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const filas = Array.from(tbody.querySelectorAll("tr"));
     if (filas.length === 0) return alert("No hay registros para exportar.");
 
-    let csvContent = "Producto;Unidades;Cajas;Total\n"; // solo estas columnas
+    let csvContent = "Producto;Unidades;Cajas;Total;Hora\n"; // solo estas columnas
     filas.forEach(fila => {
       const cols = fila.querySelectorAll("td");
       const filaDatos = Array.from(cols)
-        .slice(0, 4) // hasta Total
+        .slice(0, 5) // hasta Total
         .map(td => td.textContent.replace(/;/g, ","))
         .join(";");
       csvContent += filaDatos + "\n";
