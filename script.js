@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     registros.slice().reverse().forEach(r =>
   agregarRegistro(r.producto, r.unidades, r.cajas, r.total, false, r.hora)
   );
-
+  }
   // =======================================
   // Autocompletado productos
   // =======================================
