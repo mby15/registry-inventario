@@ -43,10 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function cargarDesdeLocalStorage() {
     const registros = JSON.parse(localStorage.getItem("registrosInventario")) || [];
-    registros.forEach(r =>
-      agregarRegistro(r.producto, r.unidades, r.cajas, r.total, false, r.hora)
-    );
-  }
+    registros.slice().reverse().forEach(r =>
+  agregarRegistro(r.producto, r.unidades, r.cajas, r.total, false, r.hora)
+  );
 
   // =======================================
   // Autocompletado productos
@@ -244,11 +243,7 @@ buscador.addEventListener("input", () => {
     fila.style.display = producto.includes(filtro) ? "" : "none";
   });
 });
-  // =======================================
-  // Cargar registros al iniciar
-  // =======================================
-  cargarDesdeLocalStorage();
-});
+
 
 
 const thProducto = document.getElementById("ordenProducto");
@@ -269,3 +264,8 @@ thProducto.addEventListener("click", () => {
 });
 
 
+  // =======================================
+  // Cargar registros al iniciar
+  // =======================================
+  cargarDesdeLocalStorage();
+});
